@@ -1,3 +1,3 @@
 # Experiments
-All visualisations
-this repo contains Algorithm and other interesting visualisations
+All visualisations.
+This repo contains Algorithm and other interesting visualisations
