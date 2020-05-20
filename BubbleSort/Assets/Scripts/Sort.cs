@@ -30,7 +30,12 @@ public class Sort
             {
                 sorted = true;
             }
+            return inputs;
         }
         return inputs;
+    }
+    public bool isSorted()
+    {
+        return sorted;
     }
 }

@@ -12,9 +12,12 @@ public class Display : MonoBehaviour
     float initialpos = -8.55f;
     Sort sort;
     float[] heights;
-    Color startCol=new Color(66f / 256f,111f / 256f, 166f / 256f, 150f / 256f);
+    Color startCol=new Color(1,1,1);
+    Color sortCol = new Color(0, 0.5f, 0, 0.25f);
+    public GameObject transition;
     void Start()
     {
+        
         sort = new Sort();
         lines = new GameObject[70];
         heights = new float[lines.Length];
@@ -31,24 +34,39 @@ public class Display : MonoBehaviour
             lineRenderer.endColor = startCol;
             lineRenderer.endWidth = 0.25f;
             lineRenderer.SetPositions(points);
-
+            
         }
         StartCoroutine(Sorter(heights));
+        
+
     }
 
     // Update is called once per frame
-    
 
+    private void Update()
+    {
+        
+    }
     IEnumerator Sorter(float[] inputs)
     {
         
-        sort.Sorter(inputs);
-        for (int i = 0; i < lines.Length; i++)
+        while (!sort.isSorted())
         {
-            lines[i].GetComponent<LineRenderer>().SetPosition(1,new Vector3(initialpos + (i * 0.25f),inputs[i]));
-            yield return new WaitForSeconds(0.04f);
+            sort.Sorter(inputs);
+            for (int i = 0; i < lines.Length; i++)
+            {
+                /*float pos = lines[i].GetComponent<LineRenderer>().GetPosition(0).x;*/
+
+                lines[i].GetComponent<LineRenderer>().SetPosition(1, new Vector3(initialpos + (i * 0.25f), inputs[i]));
+                lines[i].GetComponent<LineRenderer>().startColor = sortCol;
+                lines[i].GetComponent<LineRenderer>().endColor = sortCol;
+                yield return new WaitForSeconds(0.01f);
+                lines[i].GetComponent<LineRenderer>().startColor = startCol;
+                lines[i].GetComponent<LineRenderer>().endColor = startCol;
+            }
         }
-        yield return new WaitForSeconds(0.5f);
+        transition.SetActive(true);
+        yield return new WaitForSeconds(1.1f);
         SceneManager.LoadScene(2);
         
     }
